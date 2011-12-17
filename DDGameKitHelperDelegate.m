@@ -1,3 +1,7 @@
+//
+//  DDGameKitHelperDelegate.h
+//  Version 1.0
+
 #import "DDGameKitHelperDelegate.h"
 #import "GKAchievementHandler.h"
 

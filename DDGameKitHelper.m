@@ -1,3 +1,9 @@
+//
+//  DDGameKitHelper.m
+//  Version 1.0
+//
+//  Inspired by Steffen Itterheim's GameKitHelper
+
 #import "DDGameKitHelper.h"
 #import "DDGameKitHelperDelegate.h"
 
