@@ -30,9 +30,12 @@ think everything locally would synch with the new account, which really
 isn't what you want neccessarily.  So I will be working on a cache per
 user.
 
-I've also included Benjamin Borowski's GKAchievementNotification class
-(https://github.com/typeoneerror/GKAchievementNotification).  It does an
-excellent job of display a slide down notification that fits in
+The DDGameKitHelperDelegate class is dependent on Benjamin Borowski's 
+GKAchievementNotification class. 
+
+https://github.com/typeoneerror/GKAchievementNotification
+
+It does an excellent job of display a slide down notification that fits in
 seamlessly with game center. The only thing I needed to add to it was an
 adjustFrame method to compensate for the iPad.
 
@@ -78,7 +81,6 @@ I know all of this functionality is available in iOS 5.x, but I want to
 still support my 4.x users.  This library plays nicely with iOS 4.x and
 5.x.
 
-You are free to use DDGameKitHelper however you'd like.
-
-Doug Davies Owner, Funky Visions www.funkyvisions.com
-
+Doug Davies 
+Owner, Funky Visions 
+www.funkyvisions.com
