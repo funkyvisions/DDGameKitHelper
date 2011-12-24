@@ -6,9 +6,10 @@
 
 #import "DDGameKitHelper.h"
 #import "DDGameKitHelperDelegate.h"
+#import <CommonCrypto/CommonDigest.h>
 
-static NSString* kAchievementsFile = @"Achievements.archive";
-static NSString* kScoresFile = @"Scores.archive";
+static NSString* kAchievementsFile = @".achievements";
+static NSString* kScoresFile = @".scores";
 
 @interface DDGameKitHelper (Private)
 -(void) registerForLocalPlayerAuthChange;
@@ -60,6 +61,21 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 @synthesize achievements;
 @synthesize scores;
 @synthesize achievementDescriptions;
+@synthesize currentPlayerID;
+
+-(NSString *) returnMD5Hash:(NSString*)concat 
+{
+    const char *concat_str = [concat UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(concat_str, strlen(concat_str), result);
+    NSMutableString *hash = [NSMutableString string];
+    for (int i = 0; i < 16; i++)
+    {
+        [hash appendFormat:@"%02X", result[i]];
+    }
+    
+    return [hash lowercaseString];
+}
 
 -(id) init
 {
@@ -78,11 +94,9 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 		
 		isGameCenterAvailable = (isLocalPlayerAvailable && isOSVer41);
 		NSLog(@"GameCenter available = %@", isGameCenterAvailable ? @"YES" : @"NO");
-        
-		[self registerForLocalPlayerAuthChange];
 
-        [self initScores];
-		[self initAchievements];
+        if (isGameCenterAvailable)
+            [self registerForLocalPlayerAuthChange];
 	}
 	
 	return self;
@@ -100,9 +114,22 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 	[achievements release];
     [achievementDescriptions release];
     
+    [currentPlayerID release];
+    
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
 	[super dealloc];
+}
+
+-(void) setNotAvailable
+{
+    isGameCenterAvailable = NO;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(bool) isAvailable
+{
+    return isGameCenterAvailable;
 }
 
 -(void) authenticateLocalPlayer
@@ -118,21 +145,45 @@ static DDGameKitHelper *instanceOfGameKitHelper;
              if (error != nil)
              {
                  NSLog(@"error authenticating player");
-                 return;
              }
-
-             NSLog(@"player authenticated");
-
-             [self synchronizeScores];
-             [self synchronizeAchievements];
-             [self loadAchievementDescriptions];
+             else
+             {
+                 NSLog(@"player authenticated");
+             }
          }];
 	}
 }
 
 -(void) onLocalPlayerAuthenticationChanged
 {
-    NSLog(@"onLocalPlayerAuthenticationChanged");
+    NSLog(@"onLocalPlayerAuthenticationChanged. reloading scores and achievements and resynchronzing.");
+
+    NSString* newPlayerID;
+	GKLocalPlayer* localPlayer = [GKLocalPlayer localPlayer];
+    if (localPlayer.playerID != nil)
+    {
+        newPlayerID = [self returnMD5Hash:localPlayer.playerID];
+    }
+    else
+    {
+        newPlayerID = @"unknown";
+    }
+    
+    if (currentPlayerID != nil && [currentPlayerID compare:newPlayerID] == NSOrderedSame)
+    {
+        NSLog(@"player is the same");
+        return;
+    }
+    
+    self.currentPlayerID = newPlayerID;
+    NSLog(@"currentPlayerID=%@", currentPlayerID);
+    
+    [self initScores];
+    [self initAchievements];
+    
+    [self synchronizeScores];
+    [self synchronizeAchievements];
+    [self loadAchievementDescriptions];
 }
 
 -(void) registerForLocalPlayerAuthChange
@@ -147,7 +198,8 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 -(void) initScores
 {
     NSString* libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString* file = [libraryPath stringByAppendingPathComponent:kScoresFile];
+    NSString* file = [libraryPath stringByAppendingPathComponent:currentPlayerID];
+    file = [file stringByAppendingString:kScoresFile];
 	id object = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
 	
 	if ([object isKindOfClass:[NSMutableDictionary class]])
@@ -166,7 +218,8 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 -(void) initAchievements
 {
     NSString* libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString* file = [libraryPath stringByAppendingPathComponent:kAchievementsFile];
+    NSString* file = [libraryPath stringByAppendingPathComponent:currentPlayerID];
+    file = [file stringByAppendingString:kAchievementsFile];
 	id object = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
 	
 	if ([object isKindOfClass:[NSMutableDictionary class]])
@@ -185,7 +238,8 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 - (void) saveScores
 {
     NSString* libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString* file = [libraryPath stringByAppendingPathComponent:kScoresFile];
+    NSString* file = [libraryPath stringByAppendingPathComponent:currentPlayerID];
+    file = [file stringByAppendingString:kScoresFile];
 	[NSKeyedArchiver archiveRootObject:scores toFile:file];
     NSLog(@"scores saved: %d", scores.count);
 }
@@ -193,13 +247,16 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 -(void) saveAchievements
 {
     NSString* libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString* file = [libraryPath stringByAppendingPathComponent:kAchievementsFile];
+    NSString* file = [libraryPath stringByAppendingPathComponent:currentPlayerID];
+    file = [file stringByAppendingString:kAchievementsFile];
 	[NSKeyedArchiver archiveRootObject:achievements toFile:file];
     NSLog(@"achievements saved: %d", achievements.count);
 }
 
 -(void) synchronizeScores
 {
+    NSLog(@"synchronizing scores");
+    
     // get the top score for each category for current player and compare it to the game center score for the same category
 
     [GKLeaderboard loadCategoriesWithCompletionHandler:^(NSArray *categories, NSArray *titles, NSError *error) 
@@ -275,6 +332,8 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 
 -(void) synchronizeAchievements
 {
+    NSLog(@"synchronizing achievements");
+
     // get the achievements from game center
     
 	[GKAchievement loadAchievementsWithCompletionHandler:^(NSArray* gcAchievementsArray, NSError* error)
@@ -393,6 +452,8 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 
 - (void)loadAchievementDescriptions
 {
+    NSLog(@"loading achievement descriptions");
+    
     [GKAchievementDescription loadAchievementDescriptionsWithCompletionHandler:^(NSArray *achievementDesc, NSError *error) 
      {
          achievementDescriptions = [[NSMutableDictionary alloc] init];

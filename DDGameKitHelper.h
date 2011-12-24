@@ -19,6 +19,7 @@
 	NSMutableDictionary* achievements;
     NSMutableDictionary* scores;
 	NSMutableDictionary* achievementDescriptions;
+    NSString* currentPlayerID;
 }
 
 @property (nonatomic, retain) id<DDGameKitHelperProtocol> delegate;
@@ -26,8 +27,13 @@
 @property (nonatomic, readonly) NSMutableDictionary* achievements;
 @property (nonatomic, readonly) NSMutableDictionary* scores;
 @property (nonatomic, readonly) NSMutableDictionary* achievementDescriptions;
+@property (nonatomic, retain) NSString* currentPlayerID;
 
 +(DDGameKitHelper*) sharedGameKitHelper;
+
+-(void) setNotAvailable;
+
+-(bool) isAvailable;
 
 -(void) authenticateLocalPlayer;
 
