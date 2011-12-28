@@ -1,6 +1,6 @@
 //
-//	DDGameKitHelperDelegate.h
-//	Version 1.0
+//  DDGameKitHelperDelegate.h
+//  Version 1.0
 
 #import <Foundation/Foundation.h>
 #import "DDGameKitHelper.h"

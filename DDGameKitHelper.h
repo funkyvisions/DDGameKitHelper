@@ -1,8 +1,8 @@
 //
-//	DDGameKitHelper.h
-//	Version 1.0
+//  DDGameKitHelper.h
+//  Version 1.0
 //
-//	Inspired by Steffen Itterheim's GameKitHelper
+//  Inspired by Steffen Itterheim's GameKitHelper
 
 #import <GameKit/GameKit.h>
 
@@ -14,12 +14,12 @@
 
 @interface DDGameKitHelper : NSObject <GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate>
 {
-	id<DDGameKitHelperProtocol> delegate;
-	bool isGameCenterAvailable;
-	NSMutableDictionary* achievements;
-	NSMutableDictionary* scores;
-	NSMutableDictionary* achievementDescriptions;
-	NSString* currentPlayerID;
+    id<DDGameKitHelperProtocol> delegate;
+    bool isGameCenterAvailable;
+    NSMutableDictionary* achievements;
+    NSMutableDictionary* scores;
+    NSMutableDictionary* achievementDescriptions;
+    NSString* currentPlayerID;
 }
 
 @property (nonatomic, retain) id<DDGameKitHelperProtocol> delegate;
