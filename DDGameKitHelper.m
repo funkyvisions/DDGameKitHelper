@@ -536,6 +536,27 @@ static DDGameKitHelper *instanceOfGameKitHelper;
     }
 }
 
+-(void) showLeaderboardwithCategory:(NSString*)category timeScope:(int)tscope 
+{
+    if (isGameCenterAvailable == NO)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game Center" message:@"Game Center is not available" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil, nil];
+        [alert show];
+        [alert release];
+        
+        return;
+    }
+    
+    GKLeaderboardViewController* leaderboardVC = [[[GKLeaderboardViewController alloc] init] autorelease];
+    if (leaderboardVC != nil)
+    {
+        leaderboardVC.leaderboardDelegate = self;
+        leaderboardVC.category = category;
+        leaderboardVC.timeScope = tscope;
+        [self presentViewController:leaderboardVC];
+    }  
+}
+
 -(void) leaderboardViewControllerDidFinish:(GKLeaderboardViewController*)viewController
 {
     [self dismissModalViewController];

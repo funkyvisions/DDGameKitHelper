@@ -45,6 +45,7 @@
 
 -(void) showLeaderboard;
 
+-(void) showLeaderboardwithCategory:(NSString*)category timeScope:(int)tscope;
 
 -(void) showAchievements;
 
