@@ -1,4 +1,14 @@
-DESCRIPTION
+- Ive just added an additional method to allow you to select which leaderboard and timescale you want to show.
+
+Use it like so:
+
+[[DDGameKitHelper sharedGameKitHelper] showLeaderboardwithCategory:@"LeaderboardID" timeScope:GKLeaderboardTimeScopeAllTime];
+
+where GKLeaderboardTimeScopeAllTime is also available in GKLeaderboardTimeScopeToday and GKLeaderboardTimeScopeWeek
+
+
+
+DESCRIPTION from csddavies
 
 A simpler GameKitHelper inspired by Steffen Itterheim's version
 (http://www.learn-cocos2d.com). This version takes a different approach
@@ -38,7 +48,6 @@ https://github.com/typeoneerror/GKAchievementNotification
 It does an excellent job of display a slide down notification that fits in
 seamlessly with game center. The only thing I needed to add to it was an
 adjustFrame method to compensate for the iPad.
-
 
 USING IT
 
