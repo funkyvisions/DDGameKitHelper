@@ -45,6 +45,8 @@
 
 -(void) showLeaderboard;
 
+-(void) showLeaderboardwithCategory:(NSString*)category timeScope:(int)tscope;
+
 -(void) showAchievements;
 
 -(GKAchievementDescription*) getAchievementDescription:(NSString*)identifier;
