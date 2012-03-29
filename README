@@ -1,15 +1,3 @@
-- Ive just added an additional method to allow you to select which leaderboard and timescale you want to show.
-
-Use it like so:
-
-[[DDGameKitHelper sharedGameKitHelper] showLeaderboardwithCategory:@"LeaderboardID" timeScope:GKLeaderboardTimeScopeAllTime];
-
-where GKLeaderboardTimeScopeAllTime is also available in GKLeaderboardTimeScopeToday and GKLeaderboardTimeScopeWeek
-
-
-
-DESCRIPTION from csddavies
-
 A simpler GameKitHelper inspired by Steffen Itterheim's version
 (http://www.learn-cocos2d.com). This version takes a different approach
 by synchronizing a local cache with game center and visa versa.
@@ -77,6 +65,9 @@ Showing scores
 --------------
 
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboard];
+
+[[DDGameKitHelper sharedGameKitHelper] showLeaderboardwithCategory:@"LeaderboardID" timeScope:GKLeaderboardTimeScopeAllTime];
+where GKLeaderboardTimeScopeAllTime is also available in GKLeaderboardTimeScopeToday and GKLeaderboardTimeScopeWeek
 
 Resetting achievements 
 ----------------------
