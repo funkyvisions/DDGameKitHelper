@@ -292,7 +292,7 @@ static DDGameKitHelper *instanceOfGameKitHelper;
                   }
                   
                   GKScore* gcScore = nil;
-                  if (playerScores != nil)
+                  if ([playerScores count] > 0)
                       gcScore = [playerScores objectAtIndex:0];
                   GKScore* localScore = [scores objectForKey:category];
                   
