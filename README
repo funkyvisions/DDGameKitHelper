@@ -44,6 +44,11 @@ Authenticating a player
 
 [[DDGameKitHelper sharedGameKitHelper] authenticateLocalPlayer];
 
+Checking authentication
+-----------------------
+
+[[DDGameKitHelper sharedGameKitHelper] isLocalPlayerAuthenticated];
+
 Unlocking an achievement 
 ------------------------
 
