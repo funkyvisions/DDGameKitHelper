@@ -37,6 +37,8 @@
 
 -(void) authenticateLocalPlayer;
 
+-(bool) isLocalPlayerAuthenticated;
+
 -(void) submitScore:(int64_t)value category:(NSString*)category;
 
 -(void) reportAchievement:(NSString*)identifier percentComplete:(float)percent;

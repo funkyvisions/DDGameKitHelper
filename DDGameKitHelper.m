@@ -154,6 +154,15 @@ static DDGameKitHelper *instanceOfGameKitHelper;
     }
 }
 
+-(bool) isLocalPlayerAuthenticated
+{
+	if (isGameCenterAvailable == NO)
+		return isGameCenterAvailable;
+
+	GKLocalPlayer* localPlayer = [GKLocalPlayer localPlayer];
+	return localPlayer.authenticated;
+}
+
 -(void) onLocalPlayerAuthenticationChanged
 {
     NSString* newPlayerID;
