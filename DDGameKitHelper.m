@@ -144,7 +144,7 @@ static DDGameKitHelper *instanceOfGameKitHelper;
          {
              if (error != nil)
              {
-                 NSLog(@"error authenticating player");
+                 NSLog(@"error authenticating player: %@", [error localizedDescription]);
              }
              else
              {
@@ -524,6 +524,37 @@ static DDGameKitHelper *instanceOfGameKitHelper;
 {
     UIViewController* rootVC = [self getRootViewController];
     [rootVC dismissModalViewControllerAnimated:YES];
+}
+
+-(void) showGameCenter
+{
+    if (isGameCenterAvailable == NO)
+    {
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game Center" message:@"Game Center is not available" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil, nil];
+      [alert show];
+      [alert release];
+      
+      return;
+    }
+  
+    if ([GKGameCenterViewController class])
+    {
+        GKGameCenterViewController *gameCenterController = [[[GKGameCenterViewController alloc] init] autorelease];
+        if (gameCenterController != nil)
+        {
+            gameCenterController.gameCenterDelegate = self;
+            [self presentViewController:gameCenterController];
+        }
+    }
+    else
+    {
+        [self showLeaderboard];
+    }
+}
+
+- (void)gameCenterViewControllerDidFinish:(GKGameCenterViewController *)gameCenterViewController
+{
+    [self dismissModalViewController];
 }
 
 -(void) showLeaderboard
