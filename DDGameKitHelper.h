@@ -12,7 +12,7 @@
 -(void) onReportAchievement:(GKAchievement*)achievement;
 @end
 
-@interface DDGameKitHelper : NSObject <GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate>
+@interface DDGameKitHelper : NSObject <GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate, GKGameCenterControllerDelegate>
 {
     id<DDGameKitHelperProtocol> delegate;
     bool isGameCenterAvailable;
@@ -44,6 +44,8 @@
 -(void) reportAchievement:(NSString*)identifier percentComplete:(float)percent;
 
 -(void) resetAchievements;
+
+-(void) showGameCenter;
 
 -(void) showLeaderboard;
 
