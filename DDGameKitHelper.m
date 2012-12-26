@@ -305,6 +305,10 @@ static DDGameKitHelper *instanceOfGameKitHelper;
                       gcScore = [playerScores objectAtIndex:0];
                   GKScore* localScore = [scores objectForKey:category];
                   
+                  //Must add the next two lines in order to prevent a 'A GKScore must contain an initialized value' crash
+                  GKScore *toReport = [[[GKScore alloc] initWithCategory:category] autorelease];
+                  toReport.value = localScore.value;
+                  
                   if (gcScore == nil && localScore == nil)
                   {
                       NSLog(@"%@(%lld,%lld): no score yet. nothing to synch", category, gcScore.value, localScore.value);
@@ -326,7 +330,7 @@ static DDGameKitHelper *instanceOfGameKitHelper;
                   else if ([delegate compare:localScore.value to:gcScore.value])
                   {
                       NSLog(@"%@(%lld,%lld): local score more current than gc score. reporting local score", category, gcScore.value, localScore.value);
-                      [localScore reportScoreWithCompletionHandler:^(NSError* error) {}];
+                      [toReport reportScoreWithCompletionHandler:^(NSError* error) {}];
                   }
                   
                   else if ([delegate compare:gcScore.value to:localScore.value])
