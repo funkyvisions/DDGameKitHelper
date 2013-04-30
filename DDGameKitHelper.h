@@ -55,4 +55,8 @@
 
 -(GKAchievementDescription*) getAchievementDescription:(NSString*)identifier;
 
+- (int) numberOfTotalAchievements;
+
+- (int) numberOfCompletedAchievements;
+
 @end
