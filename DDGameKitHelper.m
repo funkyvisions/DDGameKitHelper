@@ -630,4 +630,29 @@ static DDGameKitHelper *instanceOfGameKitHelper;
     [self dismissModalViewController];
 }
 
+- (int) numberOfTotalAchievements
+{
+    int count = 0;
+    if (isGameCenterAvailable)
+    {
+        count = [achievementDescriptions allValues].count;
+    }
+    return count;
+}
+
+- (int) numberOfCompletedAchievements
+{
+    int count = 0;
+    if (isGameCenterAvailable)
+    {
+        NSArray* gcAchievementsArray = [achievements allValues];
+        for (GKAchievement* gcAchievement in gcAchievementsArray)
+        {
+            if (gcAchievement.completed)
+                count++;
+        }
+    }
+    return count;
+}
+
 @end
