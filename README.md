@@ -61,34 +61,43 @@ Installation
 
 Usage
 -----------------------
-
-###Authenticating a player 
-
+###Initializing
+You should call this prefferably in the `application:didFinishLaunchingWithOptions:` method, when starting your app.
+<pre>
+[DDGameKitHelper sharedGameKitHelper];
+</pre>
+###Authentication
+Handles authentication of the game center user and creates a cache per each new/different user.
+Shows the default game center authentication dialog.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] authenticateLocalPlayer];
 </pre>
-###Checking authentication
+Returns a `BOOL` depending on player authentication.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] isLocalPlayerAuthenticated];
 </pre>
-###Unlocking an achievement 
+###Achievements
+Handles reporting and showing of achievements.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] reportAchievement:@"1"
 percentComplete:100];
 </pre>
-###Reporting a score
+Shows the default game center view with the achievements section opened.
+<pre>
+[[DDGameKitHelper sharedGameKitHelper] showAchievements];
+</pre>
+###Leaderboard
+Handles reporting and showing leaderboard score.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] submitScore:newscore
 category:@"1"];
 </pre>
-###Showing achievements
-<pre>
-[[DDGameKitHelper sharedGameKitHelper] showAchievements];
-</pre>
-###Showing scores
+Shows the default game center view with the leaderboards section opened.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboard];
 </pre>
+Shows the default game center view with the leaderboards section opened and specific time scope selected.
+Besides `GKLeaderboardTimeScopeAllTime` you can also use `GKLeaderboardTimeScopeToday` and `GKLeaderboardTimeScopeWeek`.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboardwithCategory:@"LeaderboardID" timeScope:GKLeaderboardTimeScopeAllTime];
 where GKLeaderboardTimeScopeAllTime is also available in GKLeaderboardTimeScopeToday and GKLeaderboardTimeScopeWeek
@@ -102,10 +111,9 @@ Summary
 ----------
 
 I know all of this functionality is available in iOS 5.x, but I want to
-still support my 4.x users.  This library plays nicely with iOS 4.x and
+still support my 4.x users.
+  This library plays nicely with iOS 4.x and
 5.x.
-
------------
 
 Doug Davies 
 Owner, Funky Visions 
