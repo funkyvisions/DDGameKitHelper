@@ -1,6 +1,12 @@
+DDGameKitHelper
+===============
+
 A simpler GameKitHelper inspired by Steffen Itterheim's version
 (http://www.learn-cocos2d.com). This version takes a different approach
 by synchronizing a local cache with game center and visa versa.
+
+Story
+---------------
 
 I was having a lot of troubles getting Steffen's library to work nicely
 on iOS 4.2 devices.  For one it was trying to write to the root bundle
@@ -21,12 +27,13 @@ reports the score each time (so that daily and weekly comparisons work),
 it's only cached locally if the high score has been beat. It also
 displays a message banner.
 
+Also, I've implemented a cache per game center user.
+
 DDGameKitHelper only deals with achievements and scores. Since none of
-my games use multiplayer I didn't try to tackle an api for that.  I also
-have not tackled someone else signing in to game center.  Right now I
-think everything locally would synch with the new account, which really
-isn't what you want neccessarily.  So I will be working on a cache per
-user. (UPDATE: I've implemented this)
+my games use multiplayer I didn't try to tackle an api for that.
+
+Dependencies
+---------------
 
 The DDGameKitHelperDelegate class is dependent on Benjamin Borowski's 
 GKAchievementNotification class. 
@@ -37,54 +44,72 @@ It does an excellent job of display a slide down notification that fits in
 seamlessly with game center. The only thing I needed to add to it was an
 adjustFrame method to compensate for the iPad.
 
-USING IT
+If you don't want to use it, then change macro `DDGAMEKIT_USE_NOTIFICATION` to `0`.
 
-Authenticating a player 
+Installation
+------------
+
+1. Add the `GameKit` and `libcommonCrypto.dylib` frameworks to your Xcode project
+
+2. Add the following files to your Xcode project (make sure to select Copy Items in the dialog):
+ - GameCenterManager.h  
+ - GameCenterManager.m
+ - Reachability.h
+ - Reachability.m
+ - NSDataAES256.h
+ - NSDataAES256.m
+
+3. Open the `GameCenterManager.h` file and change the `kGameCenterManagerKey` constant to the secret key you want to use for encryption/decryption
+
+4. Import the `GameCenterManager.h` file
+
+Usage
 -----------------------
 
+###Authenticating a player 
+
+<pre>
 [[DDGameKitHelper sharedGameKitHelper] authenticateLocalPlayer];
-
-Checking authentication
------------------------
-
+</pre>
+###Checking authentication
+<pre>
 [[DDGameKitHelper sharedGameKitHelper] isLocalPlayerAuthenticated];
-
-Unlocking an achievement 
-------------------------
-
+</pre>
+###Unlocking an achievement 
+<pre>
 [[DDGameKitHelper sharedGameKitHelper] reportAchievement:@"1"
 percentComplete:100];
-
-Reporting a score 
------------------
-
+</pre>
+###Reporting a score
+<pre>
 [[DDGameKitHelper sharedGameKitHelper] submitScore:newscore
 category:@"1"];
-
-Showing achievements 
---------------------
-
+</pre>
+###Showing achievements
+<pre>
 [[DDGameKitHelper sharedGameKitHelper] showAchievements];
-
-Showing scores 
---------------
-
+</pre>
+###Showing scores
+<pre>
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboard];
-
+</pre>
+<pre>
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboardwithCategory:@"LeaderboardID" timeScope:GKLeaderboardTimeScopeAllTime];
 where GKLeaderboardTimeScopeAllTime is also available in GKLeaderboardTimeScopeToday and GKLeaderboardTimeScopeWeek
-
-Resetting achievements 
-----------------------
-
+</pre>
+###Resetting achievements
+<pre>
 [[DDGameKitHelper sharedGameKitHelper] resetAchievements];
+</pre>
 
-
-SUMMARY
+Summary
+----------
 
 I know all of this functionality is available in iOS 5.x, but I want to
 still support my 4.x users.  This library plays nicely with iOS 4.x and
 5.x.
+
+-----------
 
 Doug Davies 
 Owner, Funky Visions 
