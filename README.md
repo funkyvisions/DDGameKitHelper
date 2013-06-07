@@ -46,6 +46,11 @@ adjustFrame method to compensate for the iPad.
 
 If you don't want to use it, then change pre-processor macro `DDGAMEKIT_USE_NOTIFICATION` to `0` in `DDGameKitHelperDelegate.m` file.
 
+ARC Support
+---------------
+
+This class doesn't support ARC, however still works well with `-fno-objc-arc` compiler flag in ARC projects.
+
 Installation
 ------------
 
@@ -68,6 +73,7 @@ You should call this prefferably in the `application:didFinishLaunchingWithOptio
 </pre>
 ###Authentication
 Handles authentication of the game center user and creates a cache per each new/different user.
+
 Shows the default game center authentication dialog.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] authenticateLocalPlayer];
