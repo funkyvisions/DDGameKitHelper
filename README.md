@@ -44,24 +44,20 @@ It does an excellent job of display a slide down notification that fits in
 seamlessly with game center. The only thing I needed to add to it was an
 adjustFrame method to compensate for the iPad.
 
-If you don't want to use it, then change macro `DDGAMEKIT_USE_NOTIFICATION` to `0`.
+If you don't want to use it, then change pre-processor macro `DDGAMEKIT_USE_NOTIFICATION` to `0` in `DDGameKitHelperDelegate.m` file.
 
 Installation
 ------------
 
-1. Add the `GameKit` and `libcommonCrypto.dylib` frameworks to your Xcode project
+1. Add the `GameKit` framework to your Xcode project
 
 2. Add the following files to your Xcode project (make sure to select Copy Items in the dialog):
- - GameCenterManager.h  
- - GameCenterManager.m
- - Reachability.h
- - Reachability.m
- - NSDataAES256.h
- - NSDataAES256.m
+ - DDGameKitHelper.h
+ - DDGameKitHelper.m
+ - DDGameKitHelperDelegate.h
+ - DDGameKitHelperDelegate.m
 
-3. Open the `GameCenterManager.h` file and change the `kGameCenterManagerKey` constant to the secret key you want to use for encryption/decryption
-
-4. Import the `GameCenterManager.h` file
+3. Import the `DDGameKitHelper.h` file
 
 Usage
 -----------------------
