@@ -44,73 +44,88 @@ It does an excellent job of display a slide down notification that fits in
 seamlessly with game center. The only thing I needed to add to it was an
 adjustFrame method to compensate for the iPad.
 
-If you don't want to use it, then change macro `DDGAMEKIT_USE_NOTIFICATION` to `0`.
+If you don't want to use it, then change pre-processor macro `DDGAMEKIT_USE_NOTIFICATION` to `0`  
+in `DDGameKitHelperDelegate.m` file.
+
+ARC Support
+---------------
+
+This class doesn't support ARC, however still works well with `-fno-objc-arc` compiler flag in ARC projects.
 
 Installation
 ------------
 
-1. Add the `GameKit` and `libcommonCrypto.dylib` frameworks to your Xcode project
+1. Add the `GameKit` framework to your Xcode project
 
 2. Add the following files to your Xcode project (make sure to select Copy Items in the dialog):
- - GameCenterManager.h  
- - GameCenterManager.m
- - Reachability.h
- - Reachability.m
- - NSDataAES256.h
- - NSDataAES256.m
+ - DDGameKitHelper.h
+ - DDGameKitHelper.m
+ - DDGameKitHelperDelegate.h
+ - DDGameKitHelperDelegate.m
 
-3. Open the `GameCenterManager.h` file and change the `kGameCenterManagerKey` constant to the secret key you want to use for encryption/decryption
-
-4. Import the `GameCenterManager.h` file
+3. Import the `DDGameKitHelper.h` file
 
 Usage
 -----------------------
+###Initializing
+You should call this prefferably in the `application:didFinishLaunchingWithOptions:` method, when starting your app.
+<pre>
+[DDGameKitHelper sharedGameKitHelper];
+</pre>
+###Authentication
+Handles authentication of the game center user and creates a cache per each new/different user.
 
-###Authenticating a player 
-
+Shows the default game center authentication dialog.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] authenticateLocalPlayer];
 </pre>
-###Checking authentication
+Returns a `BOOL` depending on player authentication.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] isLocalPlayerAuthenticated];
 </pre>
-###Unlocking an achievement 
+###Achievements
+Handles reporting and showing of achievements.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] reportAchievement:@"1"
 percentComplete:100];
 </pre>
-###Reporting a score
+Shows the default game center view with the achievements section opened.
+<pre>
+[[DDGameKitHelper sharedGameKitHelper] showAchievements];
+</pre>
+###Leaderboard
+Handles reporting and showing leaderboard score.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] submitScore:newscore
 category:@"1"];
 </pre>
-###Showing achievements
-<pre>
-[[DDGameKitHelper sharedGameKitHelper] showAchievements];
-</pre>
-###Showing scores
+Shows the default game center view with the leaderboards section opened.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboard];
 </pre>
+Shows the default game center view with the leaderboards section opened and specific time scope selected.  
+Besides `GKLeaderboardTimeScopeAllTime` you can also use `GKLeaderboardTimeScopeToday` and `GKLeaderboardTimeScopeWeek`.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboardwithCategory:@"LeaderboardID" timeScope:GKLeaderboardTimeScopeAllTime];
-where GKLeaderboardTimeScopeAllTime is also available in GKLeaderboardTimeScopeToday and GKLeaderboardTimeScopeWeek
 </pre>
 ###Resetting achievements
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] resetAchievements];
 </pre>
 
+Logging
+----------
+You can change if DDGameKitHelper should log messages to the output.  
+Setting `DDGAMEKIT_LOGGING` (in `DDGameKitHelper.h`) pre-processor macro to `0` or `1` will disable or enable logging.
+
 Summary
 ----------
 
 I know all of this functionality is available in iOS 5.x, but I want to
-still support my 4.x users.  This library plays nicely with iOS 4.x and
+still support my 4.x users.  
+This library plays nicely with iOS 4.x and
 5.x.
 
------------
-
-Doug Davies 
-Owner, Funky Visions 
+Doug Davies  
+Owner, Funky Visions  
 www.funkyvisions.com
