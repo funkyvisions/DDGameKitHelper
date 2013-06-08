@@ -50,7 +50,7 @@ in `DDGameKitHelperDelegate.m` file.
 ARC Support
 ---------------
 
-This class doesn't support ARC, however still works well with `-fno-objc-arc` compiler flag in ARC projects.
+This class has been converted to ARC, however still works well with `-fobjc-arc` compiler flag in non-ARC projects.
 
 Installation
 ------------
