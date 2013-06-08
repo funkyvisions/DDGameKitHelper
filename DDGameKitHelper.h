@@ -6,57 +6,70 @@
 
 #import <GameKit/GameKit.h>
 
+// -----------------------------------------------------------------
+#define DDGAMEKIT_LOGGING 0
+// -----------------------------------------------------------------
+
 @protocol DDGameKitHelperProtocol
--(bool) compare:(int64_t)score1 to:(int64_t)score2;
--(void) onSubmitScore:(int64_t)score;
--(void) onReportAchievement:(GKAchievement*)achievement;
+- (BOOL) compareScore:(int64_t)score1 toScore:(int64_t)score2;
+- (void) onSubmitScore:(int64_t)score;
+- (void) onReportAchievement:(GKAchievement*)achievement;
 @end
+
+// -----------------------------------------------------------------
 
 @interface DDGameKitHelper : NSObject <GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate, GKGameCenterControllerDelegate>
 {
-    id<DDGameKitHelperProtocol> delegate;
-    bool isGameCenterAvailable;
-    NSMutableDictionary* achievements;
-    NSMutableDictionary* scores;
-    NSMutableDictionary* achievementDescriptions;
-    NSString* currentPlayerID;
+    id <DDGameKitHelperProtocol> _delegate;
+    BOOL _isGameCenterAvailable;
+    NSMutableDictionary* _achievements;
+    NSMutableDictionary* _scores;
+    NSMutableDictionary* _achievementDescriptions;
+    NSString* _currentPlayerID;
 }
 
-@property (nonatomic, retain) id<DDGameKitHelperProtocol> delegate;
-@property (nonatomic, readonly) bool isGameCenterAvailable;
+// -----------------------------------------------------------------
+
+@property (nonatomic, strong) id <DDGameKitHelperProtocol> delegate;
+@property (nonatomic, readonly) BOOL isGameCenterAvailable;
 @property (nonatomic, readonly) NSMutableDictionary* achievements;
 @property (nonatomic, readonly) NSMutableDictionary* scores;
 @property (nonatomic, readonly) NSMutableDictionary* achievementDescriptions;
-@property (nonatomic, retain) NSString* currentPlayerID;
+@property (nonatomic, strong) NSString* currentPlayerID;
 
-+(DDGameKitHelper*) sharedGameKitHelper;
+// -----------------------------------------------------------------
 
--(void) setNotAvailable;
+// Singleton instance
++ (DDGameKitHelper*) sharedGameKitHelper;
 
--(bool) isAvailable;
+// -----------------------------------------------------------------
 
--(void) authenticateLocalPlayer;
+// Check and set availability
+- (void) setNotAvailable;
+- (BOOL) isAvailable;
 
--(bool) isLocalPlayerAuthenticated;
+// Authenticate and check authentication
+- (void) authenticateLocalPlayer;
+- (BOOL) isLocalPlayerAuthenticated;
 
--(void) submitScore:(int64_t)value category:(NSString*)category;
+// Submitting score and achievements
+- (void) submitScore:(int64_t)value category:(NSString*)category;
+- (void) reportAchievement:(NSString*)identifier percentComplete:(float)percent;
 
--(void) reportAchievement:(NSString*)identifier percentComplete:(float)percent;
+// Resetting achievements
+- (void) resetAchievements;
 
--(void) resetAchievements;
+// Showing GameCenter
+- (void) showGameCenter;
+- (void) showLeaderboard;
+- (void) showLeaderboardWithCategory:(NSString*)category timeScope:(int)tscope;
+- (void) showAchievements;
 
--(void) showGameCenter;
-
--(void) showLeaderboard;
-
--(void) showLeaderboardwithCategory:(NSString*)category timeScope:(int)tscope;
-
--(void) showAchievements;
-
--(GKAchievementDescription*) getAchievementDescription:(NSString*)identifier;
-
+// Achievement info
 - (int) numberOfTotalAchievements;
-
 - (int) numberOfCompletedAchievements;
+- (GKAchievementDescription*) getAchievementDescription:(NSString*)identifier;
 
+// -----------------------------------------------------------------
 @end
+// -----------------------------------------------------------------
