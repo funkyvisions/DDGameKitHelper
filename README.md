@@ -44,7 +44,8 @@ It does an excellent job of display a slide down notification that fits in
 seamlessly with game center. The only thing I needed to add to it was an
 adjustFrame method to compensate for the iPad.
 
-If you don't want to use it, then change pre-processor macro `DDGAMEKIT_USE_NOTIFICATION` to `0` in `DDGameKitHelperDelegate.m` file.
+If you don't want to use it, then change pre-processor macro `DDGAMEKIT_USE_NOTIFICATION` to `0`  
+in `DDGameKitHelperDelegate.m` file.
 
 ARC Support
 ---------------
@@ -102,11 +103,10 @@ Shows the default game center view with the leaderboards section opened.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboard];
 </pre>
-Shows the default game center view with the leaderboards section opened and specific time scope selected.
+Shows the default game center view with the leaderboards section opened and specific time scope selected.  
 Besides `GKLeaderboardTimeScopeAllTime` you can also use `GKLeaderboardTimeScopeToday` and `GKLeaderboardTimeScopeWeek`.
 <pre>
 [[DDGameKitHelper sharedGameKitHelper] showLeaderboardwithCategory:@"LeaderboardID" timeScope:GKLeaderboardTimeScopeAllTime];
-where GKLeaderboardTimeScopeAllTime is also available in GKLeaderboardTimeScopeToday and GKLeaderboardTimeScopeWeek
 </pre>
 ###Resetting achievements
 <pre>
@@ -117,10 +117,10 @@ Summary
 ----------
 
 I know all of this functionality is available in iOS 5.x, but I want to
-still support my 4.x users.
-  This library plays nicely with iOS 4.x and
+still support my 4.x users.  
+This library plays nicely with iOS 4.x and
 5.x.
 
-Doug Davies 
-Owner, Funky Visions 
+Doug Davies  
+Owner, Funky Visions  
 www.funkyvisions.com
