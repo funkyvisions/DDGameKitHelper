@@ -45,10 +45,10 @@ static NSString* kScoresFile = @".scores";
 
 + (instancetype) sharedGameKitHelper
 {
-    dispatch_once_t pred;
-    __strong static DDGameKitHelper *sharedGameKitHelper = nil;
+    static DDGameKitHelper *sharedGameKitHelper = nil;
     
-    dispatch_once(&pred, ^{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sharedGameKitHelper = [[self alloc] init];
     });
     
