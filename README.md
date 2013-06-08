@@ -113,6 +113,11 @@ Besides `GKLeaderboardTimeScopeAllTime` you can also use `GKLeaderboardTimeScope
 [[DDGameKitHelper sharedGameKitHelper] resetAchievements];
 </pre>
 
+Logging
+----------
+You can change if DDGameKitHelper should log messages to the output.  
+Setting `DDGAMEKIT_LOGGING` (in `DDGameKitHelper.h`) pre-processor macro to `0` or `1` will disable or enable logging.
+
 Summary
 ----------
 
